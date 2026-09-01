@@ -18,7 +18,7 @@ export default function AdminPostManager({ initialPosts }) {
       .toLowerCase()
       .trim()
       .normalize('NFD')
-      .replace(/[̀-ͯ]/g, '')
+      .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9 -]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-');
@@ -27,9 +27,7 @@ export default function AdminPostManager({ initialPosts }) {
   const handleTitleChange = (e) => {
     const val = e.target.value;
     setTitle(val);
-    if (!editingPost) {
-      setSlug(generateSlug(val));
-    }
+    if (!editingPost) setSlug(generateSlug(val));
   };
 
   const resetForm = () => {
@@ -54,10 +52,10 @@ export default function AdminPostManager({ initialPosts }) {
 
     if (editingPost) {
       await handleUpdatePost(formData);
-      setMessage('Entrada actualizada con éxito.');
+      setMessage('Artículo actualizado correctamente.');
     } else {
       await handleCreatePost(formData);
-      setMessage('Entrada creada con éxito y archivo estático listo para Vercel.');
+      setMessage('Artículo publicado con éxito en Firebase.');
     }
 
     resetForm();
@@ -65,26 +63,35 @@ export default function AdminPostManager({ initialPosts }) {
   };
 
   const onDelete = async (id) => {
-    if (confirm('¿Seguro que deseas eliminar esta entrada?')) {
+    if (confirm('¿Eliminar este artículo?')) {
       await handleDeletePost(id);
       setPosts(posts.filter((p) => p.id !== id));
-      setMessage('Entrada eliminada.');
+      setMessage('Artículo eliminado.');
       setTimeout(() => setMessage(''), 4000);
     }
   };
 
   return (
     <div className="grid lg:grid-cols-12 gap-8">
-      {/* Formulario Crear / Editar */}
-      <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
-        <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-          {editingPost ? <Edit2 className="w-5 h-5 text-indigo-600" /> : <Plus className="w-5 h-5 text-indigo-600" />}
-          {editingPost ? 'Editar Entrada' : 'Crear Nueva Entrada'}
-        </h3>
+      {/* Formulario */}
+      <div className="lg:col-span-7 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
+        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+          <h2 className="text-lg font-bold text-slate-900">
+            {editingPost ? 'Editar Artículo' : 'Crear Nuevo Artículo'}
+          </h2>
+          {editingPost && (
+            <button
+              onClick={resetForm}
+              className="text-xs text-red-600 font-semibold bg-red-50 px-3 py-1.5 rounded-lg hover:bg-red-100 transition"
+            >
+              Cancelar Edición
+            </button>
+          )}
+        </div>
 
         {message && (
-          <div className="mb-4 p-3 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs rounded-xl flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <div className="p-3 bg-teal-50 text-teal-700 border border-teal-200 text-xs rounded-xl flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4" />
             <span>{message}</span>
           </div>
         )}
@@ -93,108 +100,91 @@ export default function AdminPostManager({ initialPosts }) {
           {editingPost && <input type="hidden" name="id" value={editingPost.id} />}
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Título</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Título</label>
             <input
               type="text"
               name="title"
               required
               value={title}
               onChange={handleTitleChange}
-              placeholder="Ej. Novedades de Next.js 14"
-              className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Guía de nutrición real"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-teal-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1">
-              <LinkIcon className="w-3.5 h-3.5 text-slate-400" />
-              Slug (Identificador de URL)
-            </label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Slug (URL amigable)</label>
             <input
               type="text"
               name="slug"
               required
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              placeholder="novedades-de-nextjs-14"
-              className="w-full border border-slate-300 bg-slate-50 font-mono text-xs rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="guia-nutricion-real"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-600 text-sm font-mono focus:outline-none focus:border-teal-500"
             />
-            <p className="text-[11px] text-slate-400 mt-1">Generará la ruta estática `/blog/{slug || 'mi-slug'}`</p>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Resumen (Excerpt)</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Extracto / Resumen</label>
             <textarea
               name="excerpt"
               required
               rows={2}
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              placeholder="Pequeño extracto para el carrusel e inicio"
-              className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Resumen corto..."
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-teal-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Contenido</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Contenido</label>
             <textarea
               name="content"
               required
-              rows={5}
+              rows={6}
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Escribe aquí el texto completo del artículo..."
-              className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Escribe aquí el contenido completo..."
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-teal-500"
             />
           </div>
 
-          <div className="flex gap-2 pt-2">
-            <button
-              type="submit"
-              className="flex-1 bg-indigo-600 text-white text-sm font-semibold py-2.5 rounded-xl hover:bg-indigo-700 transition"
-            >
-              {editingPost ? 'Guardar Cambios' : 'Publicar Entrada'}
-            </button>
-            {editingPost && (
-              <button
-                type="button"
-                onClick={resetForm}
-                className="bg-slate-100 text-slate-700 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-slate-200 transition"
-              >
-                Cancelar
-              </button>
-            )}
-          </div>
+          <button
+            type="submit"
+            className="w-full py-3.5 bg-primary-custom hover:bg-teal-700 text-white font-bold rounded-xl transition shadow-md text-sm"
+          >
+            {editingPost ? 'Guardar Cambios' : 'Guardar y Publicar Artículo'}
+          </button>
         </form>
       </div>
 
-      {/* Lista de entradas para administrar */}
-      <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h3 className="text-lg font-bold text-slate-900 mb-4">Entradas Publicadas ({posts.length})</h3>
-        <div className="space-y-3">
+      {/* Lista de artículos */}
+      <div className="lg:col-span-5 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4 h-fit">
+        <h3 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">Artículos Guardados</h3>
+        <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
           {posts.map((post) => (
             <div
               key={post.id}
-              className="p-4 border border-slate-200 rounded-xl flex items-center justify-between gap-4 hover:border-slate-300 transition"
+              className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center gap-2"
             >
-              <div className="min-w-0 flex-1">
-                <h4 className="font-bold text-slate-900 text-sm truncate">{post.title}</h4>
-                <p className="text-xs font-mono text-slate-400 truncate">/blog/{post.slug}</p>
+              <div className="overflow-hidden">
+                <h4 className="text-xs font-bold text-slate-800 truncate">{post.title}</h4>
+                <span className="text-[10px] text-primary-custom font-mono">/blog/{post.slug}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex gap-1">
                 <button
                   onClick={() => startEdit(post)}
-                  className="p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition"
-                  title="Editar"
+                  className="text-xs font-bold px-2.5 py-1 rounded-lg bg-teal-50 text-primary-custom hover:bg-teal-100 transition"
                 >
-                  <Edit2 className="w-4 h-4" />
+                  Editar
                 </button>
                 <button
                   onClick={() => onDelete(post.id)}
-                  className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
-                  title="Eliminar"
+                  className="text-xs font-bold px-2.5 py-1 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  &times;
                 </button>
               </div>
             </div>

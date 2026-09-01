@@ -1,8 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap');
+
 @tailwindcss base;
 @tailwindcss components;
 @tailwindcss utilities;
 
+:root {
+  --color-primary: #317b77;
+  --color-secondary: #054358;
+  --font-family-base: 'Montserrat', sans-serif;
+}
+
 body {
+  font-family: var(--font-family-base);
   background-color: #f8fafc;
-  color: #0f172a;
+  color: #054358;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Efecto Bento Card de tus archivos de referencia */
+.bento-card {
+  background: #ffffff;
+  border: 1px solid rgba(49, 123, 119, 0.1);
+  border-radius: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -15px rgba(5, 67, 88, 0.08);
+  border-color: rgba(49, 123, 119, 0.3);
 }
