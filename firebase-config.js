@@ -5,7 +5,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyCmC59Jh22n3H26QU2TMU36cly62Uqcfm4",
+  apiKey: "AIzaSyCmC59Jh22n3H26QU2TMU36cly62Uqcfm4",
   authDomain: "nutricion-dani-luque.firebaseapp.com",
   projectId: "nutricion-dani-luque",
   storageBucket: "nutricion-dani-luque.firebasestorage.app",
