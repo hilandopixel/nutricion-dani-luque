@@ -45,11 +45,10 @@ export default async function PostDetailPage({ params }) {
         </div>
       </header>
 
-      <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-4">
-        {post.content.split('
+// ❌ Código con error:
+{post.content.split('
 
 ').map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
         ))}
       </div>
     </article>
