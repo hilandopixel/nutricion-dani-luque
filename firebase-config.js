@@ -19,6 +19,16 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
+window.changeLang = function (lang) {
+  try {
+    localStorage.setItem("preferred_language", lang);
+  } catch (e) {}
+
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.set("lang", lang);
+  window.location.href = currentUrl.toString();
+};
+
 export async function initHeader() {
     try {
         // Intentamos cargar el header.html (usa ruta relativa desde la raíz)
