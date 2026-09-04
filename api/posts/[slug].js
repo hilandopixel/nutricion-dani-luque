@@ -83,7 +83,7 @@ export default async function handler(req, res) {
     <link rel="canonical" href="${postUrl}">
 
     <meta property="og:type" content="article">
-    <meta property="og:site_name" content="Nutrición Real">
+    <meta property="og:site_name" content="Nutrición Dani Luque">
     <meta property="og:title" content="${titulo}">
     <meta property="og:description" content="${metaDescription}">
     <meta property="og:url" content="${postUrl}">
