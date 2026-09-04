@@ -413,8 +413,9 @@
                 const esObj = data.es || defaultTranslations.es;
                 const enObj = data.en || defaultTranslations.en;
 
-                const keys = Object.keys(defaultTranslations.es);
+                const keys = Object.keys(defaultTranslations.es).sort((a, b) => a.localeCompare(b));
                 let html = '';
+                
 
                 keys.forEach(key => {
                     html += `
