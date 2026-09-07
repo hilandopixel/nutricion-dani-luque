@@ -21,23 +21,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/style.css">
 
-    <script type="application/ld+json">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Nutrición Dani Luque",
-      "image": "https://nutriciondaniluque.es/assets/logo2.png",
-      "description": "Olvídate de las dietas genéricas. Consigue un plan de nutrición clínica o deportiva totalmente personalizado, adaptado a tus objetivos, tu estilo de vida y tus necesidades.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Priego de Córdoba",
-        "addressRegion": "Córdoba",
-        "addressCountry": "ES"
-      },
+      "@type": ["LocalBusiness", "MedicalBusiness"],
+      "@id": "https://nutriciondaniluque.es",
+      "name": "Nutrición Dani Luque | Nutricionista 100% Online",
+      "image": "https://www.nutriciondaniluque.es/assets/logo2.png",
       "url": "https://nutriciondaniluque.es",
       "telephone": "+34609083012",
+      "description": "Olvídate de las dietas genéricas. Consigue un plan de nutrición clínica o deportiva totalmente personalizado, adaptado a tus objetivos, tu estilo de vida y tus necesidades.",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61594394693431",
+        "https://www.instagram.com/nutriciondaniluque",
+        "https://wa.me/34609083012",
+      ]
+    },
+    {
+      "@type": "Blog",
+      "@id": "https://nutriciondaniluque.es/#blog",
+      "url": "https://nutriciondaniluque.es/#blog",
+      "name": "Blog de Nutrición Personalizada por Dani Luque",
+      "description": "Consejos, artículos y novedades sobre nutrición y hábitos saludables personalizado.",
+      "publisher": {
+        "@id": "https://nutriciondaniluque.es"
+      }
     }
-    </script>
+  ]
+}
+</script>
+
 </head>
 <body class="min-h-screen antialiased text-secondary-custom bg-slate-50">
 

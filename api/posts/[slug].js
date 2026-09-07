@@ -97,6 +97,37 @@ export default async function handler(req, res) {
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="/assets/style.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["LocalBusiness", "MedicalBusiness"],
+      "@id": "https://nutriciondaniluque.es",
+      "name": "Nutrición Dani Luque | Nutricionista 100% Online",
+      "image": "https://www.nutriciondaniluque.es/assets/logo2.png",
+      "url": "https://nutriciondaniluque.es",
+      "telephone": "+34609083012",
+      "description": "Olvídate de las dietas genéricas. Consigue un plan de nutrición clínica o deportiva totalmente personalizado, adaptado a tus objetivos, tu estilo de vida y tus necesidades.",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61594394693431",
+        "https://www.instagram.com/nutriciondaniluque",
+        "https://wa.me/34609083012",
+      ]
+    },
+    {
+      "@type": "Blog",
+      "@id": "${postUrl}",
+      "url": "${postUrl}",
+      "name": "${titulo}",
+      "description": "${metaDescription}",
+      "publisher": {
+        "@id": "https://nutriciondaniluque.es"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body class="min-h-screen text-slate-800 flex flex-col justify-between">
     <main class="max-w-4xl mx-auto px-6 py-28 w-full flex-grow">
